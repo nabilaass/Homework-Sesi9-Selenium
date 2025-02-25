@@ -11,7 +11,7 @@ describe("SauceDemo UI Tests", function () {
 
     // Hook sebelum semua test
     before(async function () {
-        this.timeout(30000); // Tambahkan timeout 30 detik ke before hook
+        this.timeout(30000); 
         console.log("Starting WebDriver...");
 
         try {
@@ -43,31 +43,46 @@ describe("SauceDemo UI Tests", function () {
     // Test Case 1: User success login
     it("1. User success login", async function () {
         await driver.get("https://www.saucedemo.com/");
-        await driver.findElement(By.id("user-name")).sendKeys("standard_user");
-        await driver.findElement(By.id("password")).sendKeys("secret_sauce", Key.RETURN);
+        await driver.sleep(3000); 
 
-        await driver.wait(until.elementLocated(By.className("title")), 5000);
+        await driver.findElement(By.id("user-name")).sendKeys("standard_user");
+        await driver.sleep(3000); 
+
+        await driver.findElement(By.id("password")).sendKeys("secret_sauce", Key.RETURN);
+        await driver.sleep(3000); 
+
+        await driver.wait(until.elementLocated(By.className("title")), 3000);
         const titleText = await driver.findElement(By.className("title")).getText();
         expect(titleText).to.equal("Products");
     });
 
     // Test Case 2: Validate user berada di dashboard setelah login
     it("2. Validate user berada di dashboard setelah login", async function () {
+        await driver.sleep(3000); 
+
         const currentUrl = await driver.getCurrentUrl();
         expect(currentUrl).to.include("inventory.html");
     });
 
-    // Test Case 3: Add item to cart
-    it("3. Add item to cart", async function () {
+    // Test Case 3: Tambah item ke keranjang
+    it("3. Tambah item ke keranjang", async function () {
+        await driver.sleep(3000); 
+
         await driver.findElement(By.className("btn_inventory")).click();
+        await driver.sleep(3000); 
         const cartCount = await driver.findElement(By.className("shopping_cart_badge")).getText();
         expect(cartCount).to.equal("1");
     });
 
     // Test Case 4: Validate item sukses ditambahkan ke cart
     it("4. Validate item sukses ditambahkan ke cart", async function () {
+        await driver.sleep(3000);
+
         await driver.findElement(By.className("shopping_cart_link")).click();
+        await driver.sleep(3000); 
+
         const cartItem = await driver.findElement(By.className("inventory_item_name")).getText();
         expect(cartItem).to.not.be.empty;
+        console.log(`Item "${cartItem}" berhasil ditambahkan ke cart.`);
     });
 });
